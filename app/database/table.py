@@ -13,8 +13,10 @@ async def update_quiz_index(user_id, question_index):
     async with aiosqlite.connect('quiz_bot.db') as db:
         # Вставляем новую запись или заменяем ее, если с данным user_id уже существует
         await db.execute('''
-            UPDATE quiz_state SET question_index = ? WHERE user_id = ?
-        ''', (question_index, user_id))
+            INSERT INTO quiz_state (user_id, question_index, result)
+            VALUES (?, ?, COALESCE((SELECT result FROM quiz_state WHERE user_id = ?), 0))
+            ON CONFLICT(user_id) DO UPDATE SET question_index=excluded.question_index
+        ''', (user_id, question_index, user_id))
         #Сохраняем изменения
         await db.commit()
 
@@ -34,7 +36,10 @@ async def update_quiz_result(user_id, result):
     # Создаем соединение с базой данных (если она не существует, она будет создана)
     async with aiosqlite.connect('quiz_bot.db') as db:
         # Вставляем новую запись или заменяем ее, если с данным user_id уже существует
-        await db.execute('''UPDATE quiz_state SET result = ? WHERE user_id = ?''', (result, user_id))
+        await db.execute('''INSERT INTO quiz_state (user_id, question_index, result)
+            VALUES (?, COALESCE((SELECT question_index FROM quiz_state WHERE user_id = ?), 0), ?)
+            ON CONFLICT(user_id) DO UPDATE SET result=excluded.result
+        ''', (user_id, user_id, result))
         #Сохраняем изменения
         await db.commit()
 

@@ -1,4 +1,4 @@
-from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
+from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove, FSInputFile
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 
@@ -16,7 +16,9 @@ async def cmd_start(message: Message):
 @router.message(F.text=='Начать игру')
 @router.message(Command('quiz'))
 async def cmd_quiz(message: Message):
-    await message.answer('Давайте начнем квиз!', reply_markup=ReplyKeyboardRemove())
+    photo = FSInputFile('app/images/quiz.png')
+    await message.answer_photo(photo=photo, caption='Давайте начнем квиз!\n'
+                         'Тема - "Программирование на Python"', reply_markup=ReplyKeyboardRemove())
     #Запускаем новый квиз
     await new_quiz(message)
 
