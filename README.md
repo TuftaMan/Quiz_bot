@@ -1,6 +1,6 @@
-# QuizPythonBot - Асинхронный Telegram-бот на Python с использованием aiogram 3, реализующий квиз (викторину) с несколькими вопросами по  и подсчетом очков.
+# QuizBot - Асинхронный Telegram-бот на Python с использованием aiogram 3, реализующий квиз (викторину) с вопросами по Python и подсчетом очков.
 
-[Перейти к боту в Telegram](https://t.me/Quiz_thefounder_bot)
+[Перейти к боту в Telegram](https://t.me/study_teach_ai_bot)
 
 ---
 
